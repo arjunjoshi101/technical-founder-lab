@@ -2,7 +2,7 @@
 
 - Current day: Day 1
 - Date: 23 September 2026
-- Status: In progress
+- Status: **Complete**
 - Git version verified: 2.50.1 Apple Git-155
 - Git identity configured as Arjun Joshi
 - Local repo: `/Users/arjunjoshi/Projects/technical-founder-lab`
@@ -26,16 +26,28 @@
 - remote
 - origin
 - push
+- staged diff
+- pull request
+- review
+- merge
+- remote branch deletion
+- pull and local main synchronisation
+
+## Day 1 completed workflow
+
+- Created and pushed a feature branch
+- Inspected staged changes
+- Created a pull request
+- Reviewed it
+- Merged it into main
+- Deleted the remote feature branch
+- Synchronised local main
+- Created a dedicated ChatGPT Project called Technical Founder Sprint and added persistent Project Instructions
 
 ## Still to complete on Day 1
 
-- branch workflow
-- inspecting a diff
-- pushing a branch
-- pull request
-- merging
-- pulling updated main
+None. Day 1's Git workflow is complete.
 
 ## Next action
 
-inspect the three new files, then stage/commit them on `setup-learning-system`, push the branch, create the first pull request, merge it and synchronise local `main`.
+**Begin Day 2: understand the architecture and data flow of a modern web application before writing application code.**

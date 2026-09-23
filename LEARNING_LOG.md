@@ -23,3 +23,17 @@
 
 - accidentally attempted to execute a directory path as a command
 - accidentally pasted Git commands into README.md
+
+### Day 1 completion — Git workflow and persistent project setup
+
+- Created and pushed a feature branch
+- Inspected staged changes
+- Created a pull request
+- Reviewed it
+- Merged it into main
+- Deleted the remote feature branch
+- Synchronised local main
+- Created a dedicated ChatGPT Project called Technical Founder Sprint and added persistent Project Instructions
+- Completed Day 1's Git workflow; Day 1 status: **Complete**
+
+Next action: **Begin Day 2: understand the architecture and data flow of a modern web application before writing application code.**
