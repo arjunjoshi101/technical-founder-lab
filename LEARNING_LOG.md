@@ -73,3 +73,14 @@ Status: **Complete**
 - Initially conflated FastAPI/backend/database and clarified those boundaries
 
 Next action: **Begin Day 3: transform the Day 2 request flow into an LLM-powered Program Extractor that takes messy university programme text and returns structured JSON.**
+
+### Day 2 Git completion — 25 September 2026
+
+- Added `.gitignore` rules for Python caches, virtual environments and environment secrets, with an exception for `.env.example`
+- Reviewed the changes, staged the intended files and inspected the staged diff
+- Created commit `8f3da95 — feat: add Day 2 web request flow demo` and pushed the Day 2 branch
+- Created and reviewed PR #3, then merged it into `main` as merge commit `6ef526d`
+- Deleted the remote `day2-web-request-flow` branch, checked out local `main`, pulled and verified a clean working directory before this learning-record update
+- Day 2 learning and Git workflow are complete; Day 3 implementation has not started
+
+Next action: **Define the Program Extractor's input, output fields, and request flow before implementation.**

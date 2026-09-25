@@ -2,7 +2,7 @@
 
 - Current day: Day 2
 - Date: 25 September 2026
-- Status: **Day 2 learning complete; Git closure pending**
+- Status: **Day 2 learning and Git workflow complete**
 - Git version verified: 2.50.1 Apple Git-155
 - Git identity configured as Arjun Joshi
 - Local repo: `/Users/arjunjoshi/Projects/technical-founder-lab`
@@ -68,16 +68,20 @@
 - Synchronised local main
 - Created a dedicated ChatGPT Project called Technical Founder Sprint and added persistent Project Instructions
 
-## Still to complete on Day 2
+## Day 2 Git completion
 
-Day 2's learning and practical exercises are complete. Git closure is pending: review the changes, stage the intended files, inspect the staged diff, commit, push, create and review a pull request, merge, return to main, pull and verify a clean state.
+- Reviewed and staged the Day 2 changes, then inspected the staged diff
+- Added `.gitignore` rules for generated Python caches, virtual environments and environment secrets, while allowing `.env.example`
+- Created commit `8f3da95 — feat: add Day 2 web request flow demo`
+- Pushed the Day 2 branch and created, reviewed and merged PR #3
+- Merge commit: `6ef526d`
+- Deleted the remote `day2-web-request-flow` branch
+- Checked out local `main`, pulled the merged changes and verified a clean working directory before this learning-record update
 
-Before staging, exclude generated Python cache files from the change set. The review found `day-02-web-flow/__pycache__/app.cpython-313.pyc` untracked and not ignored.
+## Day 3 status
+
+Program Extractor implementation has not started.
 
 ## Next action
 
-**review → stage → inspect staged diff → commit → push → PR → review → merge → checkout main → pull → verify clean state.**
-
-## After Day 2 Git closure
-
-**Begin Day 3: transform the Day 2 request flow into an LLM-powered Program Extractor that takes messy university programme text and returns structured JSON.**
+**Define the Program Extractor's input, output fields, and request flow before implementation.**
