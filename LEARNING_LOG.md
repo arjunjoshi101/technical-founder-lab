@@ -37,3 +37,39 @@
 - Completed Day 1's Git workflow; Day 1 status: **Complete**
 
 Next action: **Begin Day 2: understand the architecture and data flow of a modern web application before writing application code.**
+
+## Day 2 — 25 September 2026
+
+Status: **Complete**
+
+### Completed
+
+- Learned browser vs frontend
+- Learned frontend vs backend
+- Learned backend vs database
+- Learned API vs HTTP
+- Learned JSON as a structured data exchange format
+- Learned authentication vs authorisation
+- Learned why third-party API keys belong in the backend
+- Learned deployment vs localhost
+- Learned Uvicorn vs FastAPI
+- Built and ran a minimal FastAPI + HTML/JavaScript application
+- Observed a real `POST /api/search` request in Chrome DevTools
+- Inspected the JSON request payload and JSON response
+- Observed `200 OK` and `404 Not Found`
+- Deliberately stopped Uvicorn and observed `connection refused`
+- Proved the current search logic is hard-coded by sending an unrelated query and receiving the same results
+
+### Project files
+
+- `day-02-web-flow/app.py`
+- `day-02-web-flow/static/index.html`
+- `day-02-web-flow/requirements.txt`
+
+### Debugging and learning moments
+
+- Accidentally used a trailing backslash in a `cd` command, causing the next command to be joined to the path
+- Learned that code existing on disk is not the same thing as a running server
+- Initially conflated FastAPI/backend/database and clarified those boundaries
+
+Next action: **Begin Day 3: transform the Day 2 request flow into an LLM-powered Program Extractor that takes messy university programme text and returns structured JSON.**

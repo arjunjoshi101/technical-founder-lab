@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Setu — Day 2 web flow</title>
+  <style>
+    body { font-family: system-ui, sans-serif; max-width: 640px; margin: 48px auto; padding: 0 20px; color: #172435; }
+    label { display: block; margin-bottom: 8px; }
+    input { box-sizing: border-box; width: 100%; padding: 12px; font: inherit; }
+    button { margin-top: 12px; padding: 12px 18px; font: inherit; cursor: pointer; }
+    button:disabled { cursor: wait; }
+    #status { min-height: 1.5em; }
+    .error { color: #b42318; }
+    #results { list-style: none; padding: 0; }
+    #results li { padding: 16px; margin-bottom: 12px; background: #f1f5f9; border-radius: 8px; }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>Find your next programme</h1>
+    <p>Day 2 demo: every search returns the same three fictional programmes.</p>
+
+    <form id="search-form">
+      <label for="query">What would you like to study?</label>
+      <input id="query" name="query" type="text" required maxlength="500"
+        value="I want to study public policy in the UK">
+      <button id="submit-button" type="submit">Find programmes</button>
+    </form>
+
+    <p id="status" role="status" aria-live="polite"></p>
+    <h2>Results</h2>
+    <ul id="results" aria-label="Sample programmes"></ul>
+  </main>
+
+  <script>
+    const form = document.getElementById("search-form");
+    const queryInput = document.getElementById("query");
+    const button = document.getElementById("submit-button");
+    const status = document.getElementById("status");
+    const results = document.getElementById("results");
+
+    form.addEventListener("submit", async (event) => {
+      // Handle the form with JavaScript instead of reloading the page.
+      event.preventDefault();
+      results.replaceChildren();
+      status.className = "";
+
+      const query = queryInput.value.trim();
+      if (!query) {
+        status.textContent = "Please enter what you would like to study.";
+        status.className = "error";
+        return;
+      }
+
+      button.disabled = true;
+      status.textContent = "Loading programmes…";
+
+      try {
+        // Send a JSON request to our own backend.
+        const response = await fetch("/api/search", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ query: query })
+        });
+
+        // fetch does not throw automatically for HTTP error responses.
+        if (!response.ok) {
+          throw new Error(`The server returned HTTP ${response.status}.`);
+        }
+
+        // Read the JSON response and turn each programme into visible text.
+        const data = await response.json();
+        for (const programme of data.programmes) {
+          const item = document.createElement("li");
+          item.textContent = `${programme.title} — ${programme.university} (${programme.country})`;
+          results.appendChild(item);
+        }
+        status.textContent = `${data.programmes.length} sample programmes loaded.`;
+      } catch (error) {
+        results.replaceChildren();
+        status.textContent = "Could not load programmes. Check that the local server is running and try again.";
+        status.className = "error";
+        console.error("Search failed:", error);
+      } finally {
+        button.disabled = false;
+      }
+    });
+  </script>
+</body>
+</html>
