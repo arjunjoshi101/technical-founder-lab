@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Setu — Local Program Extractor</title>
+  <style>
+    body { max-width: 720px; margin: 40px auto; padding: 0 20px; font-family: system-ui, sans-serif; color: #172435; }
+    label { display: block; font-weight: bold; margin-bottom: 8px; }
+    textarea { width: 100%; box-sizing: border-box; padding: 12px; font: inherit; }
+    button { padding: 10px 20px; font: inherit; cursor: pointer; }
+    button:disabled { cursor: wait; }
+    #status { min-height: 1.5em; }
+    .error { color: #b42318; }
+    pre { background: #f1f5f9; padding: 16px; white-space: pre-wrap; overflow-wrap: anywhere; }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>Local Program Extractor</h1>
+    <p>Paste one programme description. This demo uses qwen3:4b-instruct through Ollama on your Mac.</p>
+    <form id="extract-form">
+      <label for="text">Programme text (maximum 1,500 characters)</label>
+      <textarea id="text" rows="9" maxlength="1500" required>Fictional example — not a real university or offer.
+Northbridge Example University in the United Kingdom offers an MSc in Public Policy.
+The programme lasts 12 months. Total tuition is GBP 18000.
+No application deadline is provided.</textarea>
+      <p>The example above is fictional. Missing or ambiguous information should become null.</p>
+      <button id="extract-button" type="submit">Extract</button>
+    </form>
+    <p id="status" role="status" aria-live="polite"></p>
+    <h2>Extracted JSON</h2>
+    <p>Correct structure does not guarantee factual accuracy. Compare every value with the source text.</p>
+    <pre id="output" aria-label="Extracted JSON">Your result will appear here.</pre>
+  </main>
+  <script>
+    const form = document.getElementById("extract-form");
+    const textInput = document.getElementById("text");
+    const button = document.getElementById("extract-button");
+    const status = document.getElementById("status");
+    const output = document.getElementById("output");
+
+    form.addEventListener("submit", async (event) => {
+      event.preventDefault();
+      if (button.disabled) return;
+      status.className = "";
+      output.textContent = "";
+      const text = textInput.value;
+      if (!text.trim() || text.length > 1500) {
+        status.textContent = "Enter 1–1,500 characters of programme text, not just spaces.";
+        status.className = "error";
+        return;
+      }
+
+      button.disabled = true;
+      status.textContent = "Extracting locally… the first request may take longer while the model loads.";
+      // Bound the browser's wait too. Aborting does not guarantee model cancellation.
+      const controller = new AbortController();
+      const timer = setTimeout(() => controller.abort(), 100000);
+      try {
+        const response = await fetch("/api/extract", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ text: text }),
+          signal: controller.signal
+        });
+        const data = await response.json();
+        if (!response.ok) {
+          throw new Error(typeof data.detail === "string" ? data.detail : "Extraction failed. Check the backend terminal.");
+        }
+        output.textContent = JSON.stringify(data, null, 2);
+        status.textContent = "Extraction complete. Check the values against your source text.";
+      } catch (error) {
+        status.className = "error";
+        if (error.name === "AbortError") {
+          status.textContent = "The browser stopped waiting after 100 seconds. Check the backend and Ollama before trying again.";
+        } else if (error instanceof TypeError) {
+          status.textContent = "Cannot reach the extractor. Check that the FastAPI server is running.";
+        } else {
+          status.textContent = error.message;
+        }
+      } finally {
+        clearTimeout(timer);
+        button.disabled = false;
+      }
+    });
+  </script>
+</body>
+</html>

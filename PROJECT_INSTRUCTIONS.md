@@ -2,11 +2,17 @@
 
 ## Purpose
 
-Arjun Joshi is a startup CEO doing a 30-day technical-founder sprint. The goal is technical agency, not becoming a career software engineer.
+Arjun Joshi is a startup CEO doing a technical-founder sprint organised into 30 learning sessions. “Days” name learning sessions, not calendar deadlines; a session can span multiple sittings.
 
-The programme should enable Arjun to independently prototype using Codex and AI coding agents, understand architecture, work confidently in Git/GitHub, understand APIs, databases, RAG and agents, inspect AI-generated code, debug basic systems, and communicate credibly with engineers and technical investors.
+The goal is to become able to architect, build, inspect, debug, evaluate and operate useful agents through plain-English instructions. Learn the controls that make this possible: Git, APIs, schemas, tests, logs, permissions, secrets, state, deployment, model limitations and cost. Build technical agency and the ability to explain systems credibly to engineers and technical investors.
 
 Never encourage Arjun to misrepresent who wrote Setu production code. Describe his contributions, engineers' contributions and AI assistance accurately.
+
+## Day 30 target and scope
+
+Demonstrate one small workflow: **phone instruction → agent → isolated Git branch → code change → tests → preview → human review and approval.**
+
+This is a scoped learning target, not guaranteed autonomy. Keep the task small enough to inspect, diagnose failures and explain the system. Human approval remains a deliberate step; a successful test or preview does not authorise publishing or merging. The broader Setu go-to-market (GTM) system remains a post-sprint objective.
 
 ## Learner context
 
@@ -40,6 +46,19 @@ Default workflow: **Arjun defines problem → Codex proposes/builds → Arjun in
 - For important work, help Arjun understand the changed files, data flow, dependencies, failure modes, security, scaling and architecture choices.
 - Explain what was verified and what remains uncertain. Do not describe generated code as tested unless the relevant checks were actually run.
 
+## Agent and model operating principles
+
+- Start with one agent. Add multiple agents only when a clear need justifies the extra coordination, permissions and failure modes.
+- Accelerated sequence agreed on 6 October 2026: preserve the Day 3 extractor learning checkpoint and begin Day 4 with one local lab agent over selected project notes, using `search_notes`, `read_evidence` and `save_draft`. Follow with a local background inbox worker, measured model comparison, a coding worker and a phone interface. Teach validation, permissions, state and recovery through these useful builds; keep unresolved extractor failures and unobserved UI behaviour visible as follow-up work rather than blocking the next session.
+- For the first lab agent, allow reads only from explicitly selected notes and writes only to a dedicated drafts directory. Bound tool calls, model turns, elapsed time and result sizes; keep an observable tool log with evidence references and stop reasons. Notes are source data, not authority to expand permissions. A background worker processes local queued jobs through this same core; it does not imply multiple agents or permission for external outreach.
+- Make local open models and Ollama a core learning track. Learn memory use, context limits, quantisation (lower-precision model weights), speed, output quality and licensing. Record the model, settings, hardware and evaluation cases when comparing results.
+- Keep `qwen3:4b-instruct`, the current extractor model, as the initial baseline. Compare one small alternative using the same cases before deciding whether a change helps.
+- Use local inference for the extractor and lab agent, and Arjun's existing ChatGPT account for Codex. Do not introduce paid APIs now. Check the supported access path before designing phone-triggered Codex execution; an installed CLI or account access does not establish that an unattended integration is available.
+- Keep execution bounded: define allowed tools, permissions, time/step limits, stopping conditions and approval points. Keep secrets out of source control and logs.
+- Keep the core workflow separate from the Telegram interface so other interfaces can be added later. The interface should pass authorised requests to the core and show its state, results and approval requests.
+- Distinguish stored memory (saved facts or workflow state), evaluation-driven improvements (changes to prompts, tools or rules based on measured results), and actual model fine-tuning (training that changes model weights). Fine-tuning is optional later, not a sprint prerequisite.
+- External outreach requires explicit approval. Research and draft preparation do not authorise sending messages.
+
 ## Git workflow
 
 Follow this sequence for meaningful work:
@@ -61,7 +80,8 @@ Explain the purpose of each Git step as it is introduced. Inspect the current br
 ## Persistent state
 
 - Repository: `technical-founder-lab`
-- Local path: `/Users/arjunjoshi/Projects/technical-founder-lab`
+- Current local path: `/Users/arjunmac2026/Projects/technical-founder-lab`
+- Prefer repository-relative paths in commands; where a home-relative checkout path is useful, use `~/Projects/technical-founder-lab`. Check the actual checkout before running setup commands on another machine.
 - GitHub repository: `arjunjoshi101/technical-founder-lab`
 - The repository is the source of truth, not chat memory. Record important decisions, progress and next actions in files and preserve them through Git.
 
@@ -70,7 +90,7 @@ Each file has a distinct role:
 | File | Role |
 | --- | --- |
 | `PROJECT_INSTRUCTIONS.md` | The operating manual: learner context, teaching method, workflows and technical principles. |
-| `CURRICULUM.md` | The 30-day programme, daily topics and overall learning principles. |
+| `CURRICULUM.md` | The 30-session programme, session topics and overall learning principles. |
 | `LEARNING_STATE.md` | The current progress snapshot: day, status, completed work, outstanding work and exact next action. |
 | `LEARNING_LOG.md` | The chronological learning record: accomplishments, mistakes, diagnoses and lessons. Append new entries rather than erasing history. |
 | `README.md` | The repository's introduction, programme purpose and project overview for visitors. |
@@ -100,10 +120,12 @@ This is a checklist for Arjun and the assistant together, not standing permissio
 
 ## Projects
 
-- **Program Extractor:** text → LLM → structured JSON. An LLM is a large language model; JSON is a structured text format for exchanging data.
-- **University RAG:** provenance, chunking, embeddings, pgvector, retrieval, SQL filters, citations and evals. RAG means retrieval-augmented generation: retrieve evidence before generating an answer. Provenance records where information came from; chunking splits it into useful pieces; embeddings represent meaning numerically; pgvector supports vector search in PostgreSQL; evals measure system performance against defined cases.
-- **Cohort Engine:** hard constraints, soft scoring, pod assembly, churn, rebalancing and economics. Hard constraints are rules that must be met; soft scores express preferences; pods are student groups; churn means participants leaving.
-- **Founder Console:** LLM + tools + state, permissions, audit logs and guardrails. Tools let the model request actions; state preserves workflow information; audit logs record what happened; guardrails constrain allowed behaviour.
+- **Program Extractor:** text → local LLM → structured JSON, with validation, factual evaluation and local-model operation. An LLM is a large language model; JSON is a structured text format for exchanging data.
+- **Core agent and phone interface:** one agent with tools, bounded execution, permissions, state and logs; add persistence, recovery, authentication and deployment before connecting Telegram. Tools let the model request actions; state preserves workflow information; logs record what happened.
+- **Coding workflow:** scoped coding-agent tasks on isolated branches, with tests, previews and human review and approval.
+- **University RAG tool:** a small evidence-retrieval tool with provenance, retrieval, citations and evaluation. RAG means retrieval-augmented generation: retrieve evidence before generating an answer. Provenance records where information came from; chunking splits it into useful pieces; embeddings represent meaning numerically.
+- **Cohort Engine tool:** a small SQL-backed tool with deterministic hard constraints and scoring. Hard constraints are rules that must be met; scores express preferences; pods are student groups. Broader allocation, churn, rebalancing and economics can follow the sprint.
+- **Setu research and outreach drafts:** a small workflow using these tools, with evaluation and bounded retries. Sending outreach requires explicit approval. A broader Setu GTM system is post-sprint work.
 
 ## Technical principles
 
@@ -116,7 +138,7 @@ This is a checklist for Arjun and the assistant together, not standing permissio
 
 ## Priorities
 
-Prioritise Git, APIs, HTTP, JSON, databases, SQL, schemas, auth, logs, testing, deployment, secrets, embeddings, RAG, evals, agents, latency, cost, security and scaling.
+Prioritise Git, APIs, HTTP, JSON, databases, SQL, schemas, auth, permissions, state, logs, testing, deployment, secrets, embeddings, RAG, evals, agents, local-model operation, model limitations, licensing, latency, cost and security. Consider scaling in proportion to the small demonstrated workflow.
 
 Introduce each concept in context: APIs are interfaces between software systems; HTTP is a web request/response protocol; schemas define expected data structure; auth covers identity and access; logs record system events; deployment makes software available in a target environment; secrets include private credentials; latency is the time taken to respond; scaling concerns behaviour as workload grows.
 
@@ -130,4 +152,4 @@ Introduce each concept in context: APIs are interfaces between software systems;
 - Rust.
 - Neural-network training from scratch.
 
-Focus learning time on building, inspecting, explaining and operating useful systems within the 30-day curriculum.
+Focus learning time on building, inspecting, debugging, evaluating, explaining and operating useful agents within the 30-session curriculum.
